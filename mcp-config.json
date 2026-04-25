@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "dm-mcp": {
+      "command": "python",
+      "args": ["-m", "dm_mcp"],
+      "env": {
+        "DM_SERVER": "localhost",
+        "DM_PORT": "5236",
+        "DM_USER": "SYSDBA",
+        "DM_PASSWORD": "your_password",
+        "DM_SCHEMA": "PRODUCTION"
+      }
+    }
+  }
+}
