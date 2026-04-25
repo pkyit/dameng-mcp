@@ -10,10 +10,10 @@ readme = "README.md"
 license = {file = "LICENSE"}
 requires-python = ">=3.8"
 authors = [
-    {name = "Your Name", email = "your.email@example.com"},
+    {name = "pkyit", email = "pky86676022@163.com"},
 ]
 maintainers = [
-    {name = "Your Name", email = "your.email@example.com"},
+    {name = "pkyit", email = "pky86676022@163.com"},
 ]
 keywords = ["mcp", "database", "dameng", "sql", "query"]
 classifiers = [
@@ -37,10 +37,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/dm-mcp"
-Repository = "https://github.com/yourusername/dm-mcp"
-Issues = "https://github.com/yourusername/dm-mcp/issues"
-Changelog = "https://github.com/yourusername/dm-mcp/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/pkyit/dameng-mcp"
+Repository = "https://github.com/pkyit/dameng-mcp"
+Issues = "https://github.com/pkyit/dameng-mcp/issues"
+Changelog = "https://github.com/pkyit/dameng-mcp/blob/main/CHANGELOG.md"
 
 [project.scripts]
 dm-mcp = "dm_mcp.__main__:main"
