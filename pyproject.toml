@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dm-mcp"
-version = "1.0.0"
+version = "1.0.1"
 description = "达梦数据库 MCP 服务器 - 基于 FastMCP 的安全数据库查询工具"
 readme = "README.md"
 license = {file = "LICENSE"}
@@ -47,7 +47,6 @@ dm-mcp = "dm_mcp.__main__:main"
 
 [tool.setuptools]
 packages = ["dm_mcp"]
-package-dir = {"" = "."}
 
 [tool.setuptools.package-data]
 dm_mcp = ["*.md", "*.txt"]

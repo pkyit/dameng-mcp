@@ -105,18 +105,51 @@ python -m dm_mcp
 
 **示例:**
 ```sql
-SELECT * FROM users WHERE status = 'active' LIMIT 10;
+-- 简单查询
+SELECT * FROM RESOURCES.EMPLOYEE WHERE ROWNUM <= 5;
+
+-- 聚合查询
+SELECT TITLE, COUNT(*) as 人数, AVG(SALARY) as 平均工资 
+FROM RESOURCES.EMPLOYEE 
+GROUP BY TITLE 
+ORDER BY 平均工资 DESC;
+
+-- 多表关联查询
+SELECT PC.NAME as 主分类, PSC.NAME as 子分类, COUNT(P.PRODUCTID) as 产品数量 
+FROM PRODUCTION.PRODUCT_CATEGORY PC 
+JOIN PRODUCTION.PRODUCT_SUBCATEGORY PSC ON PC.PRODUCT_CATEGORYID = PSC.PRODUCT_CATEGORYID 
+LEFT JOIN PRODUCTION.PRODUCT P ON PSC.PRODUCT_SUBCATEGORYID = P.PRODUCT_SUBCATEGORYID 
+GROUP BY PC.NAME, PSC.NAME 
+ORDER BY PC.NAME, PSC.NAME;
 ```
 
 **返回:** 查询结果的格式化字符串，包含列名和数据行。
+
+**⚠️ 重要提示:**
+- 达梦数据库需要使用 Schema 前缀（如 `RESOURCES.EMPLOYEE`、`PRODUCTION.PRODUCT`）
+- 如果不确定表所在的 Schema，可以先查询：`SELECT OWNER, TABLE_NAME FROM ALL_TABLES WHERE TABLE_NAME = '表名'`
+- 支持复杂的 SQL 查询，包括聚合函数、分组、排序、多表关联等
 
 ### 2. get_table_structure(table_name: str)
 获取指定表的结构信息。
 
 **参数:**
-- `table_name`: 表名（不区分大小写）
+- `table_name`: 表名（不区分大小写，会自动转换为大写）
+
+**示例:**
+```python
+# 获取 EMPLOYEE 表结构
+get_table_structure("EMPLOYEE")
+
+# 获取 PRODUCT 表结构
+get_table_structure("PRODUCT")
+```
 
 **返回:** 表的列信息，包括列名、数据类型和长度。
+
+**⚠️ 重要提示:**
+- 表名不需要加 Schema 前缀，工具会自动在当前 Schema 中查找
+- 如果表不存在或无权访问，会返回相应的错误信息
 
 ## 项目结构
 
@@ -144,6 +177,64 @@ dm-mcp/
 - 仅允许 SELECT 查询，防止数据修改
 - 通过环境变量配置敏感信息
 - 连接失败时返回错误信息而不是抛出异常
+- Schema 名称和表名经过严格验证，防止 SQL 注入
+
+### 使用示例
+
+#### 示例 1：查询员工信息
+
+```python
+# 查询前5条员工记录
+query_db("SELECT EMPLOYEEID, LOGINID, TITLE, SALARY FROM RESOURCES.EMPLOYEE WHERE ROWNUM <= 5")
+
+# 输出：
+# 查询成功 (共5条):
+# EMPLOYEEID | LOGINID | TITLE | SALARY
+# --------------------------------------------------
+# 1 | L1 | 总经理 | 40000.0
+# 2 | L2 | 销售经理 | 26000.0
+# ...
+```
+
+#### 示例 2：统计产品分类
+
+```python
+# 查询产品分类统计
+query_db("""
+    SELECT PC.NAME as 主分类, 
+           COUNT(PSC.PRODUCT_SUBCATEGORYID) as 子分类数量 
+    FROM PRODUCTION.PRODUCT_CATEGORY PC 
+    LEFT JOIN PRODUCTION.PRODUCT_SUBCATEGORY PSC 
+        ON PC.PRODUCT_CATEGORYID = PSC.PRODUCT_CATEGORYID 
+    GROUP BY PC.NAME 
+    ORDER BY PC.NAME
+""")
+
+# 输出：
+# 查询成功 (共7条):
+# 主分类 | 子分类数量
+# --------------------------------------------------
+# 小说 | 6
+# 文学 | 7
+# 计算机 | 8
+# ...
+```
+
+#### 示例 3：获取表结构
+
+```python
+# 获取 EMPLOYEE 表结构
+get_table_structure("EMPLOYEE")
+
+# 输出：
+# 表结构 [EMPLOYEE]:
+# 列名 | 类型 | 长度
+# ------------------------------
+# EMPLOYEEID | INT | 4
+# NATIONALNO | VARCHAR | 18
+# PERSONID | INT | 4
+# ...
+```
 
 ## 发布
 

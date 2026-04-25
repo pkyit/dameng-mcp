@@ -1,8 +1,7 @@
 {
   "mcpServers": {
     "dm-mcp": {
-      "command": "python",
-      "args": ["-m", "dm_mcp"],
+      "command": "dm-mcp",
       "env": {
         "DM_SERVER": "localhost",
         "DM_PORT": "5236",
