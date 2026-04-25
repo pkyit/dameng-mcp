@@ -20,7 +20,7 @@ pip install dm-mcp
 ### 从源码安装
 
 ```bash
-git clone https://github.com/yourusername/dm-mcp.git
+git clone https://github.com/pkyit/dm-mcp.git
 cd dm-mcp
 pip install -e .
 ```
